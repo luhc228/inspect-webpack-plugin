@@ -1,0 +1,49 @@
+{
+  "name": "inspect-webpack-plugin",
+  "version": "0.0.0",
+  "description": "A webpack plugin for inspecting module assets generation.",
+  "main": "index.js",
+  "scripts": {
+    "build": "",
+    "build:node": "",
+    "build:web": "",
+    "watch": "",
+    "watch:node": "",
+    "watch:web": "",
+    "watch:example": "webpack-dev-server --config ./example/webpack.config.ts --mode development",
+    "build:example": "webpack --config ./example/webpack.config.ts --mode production",
+    "lint": "npm run eslint",
+    "eslint": "eslint --ext .ts,.tsx ./",
+    "eslint:fix": "npm run eslint -- --fix"
+  },
+  "keywords": [
+    "webpack-plugin",
+    "inspect"
+  ],
+  "author": "luhc228",
+  "license": "ISC",
+  "devDependencies": {
+    "@applint/spec": "^1.2.3",
+    "@swc/core": "^1.2.244",
+    "@types/node": "^18.7.13",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@types/webpack": "^5.28.0",
+    "eslint": "^8.23.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "stylelint": "^14.11.0",
+    "swc-loader": "^0.2.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.0"
+  },
+  "peerDependencies": {
+    "webpack": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
