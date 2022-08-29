@@ -1,6 +1,7 @@
 import * as webpack from 'webpack';
 import * as path from 'path';
 import 'webpack-dev-server';
+import InspectWebpackPlugin from '../src/node';
 
 const config: webpack.Configuration = {
   entry: path.resolve(__dirname, './src/App.tsx'),
@@ -44,6 +45,9 @@ const config: webpack.Configuration = {
       directory: path.join(__dirname, 'public'),
     },
   },
+  plugins: [
+    new InspectWebpackPlugin(),
+  ],
 };
 
 export default config;
