@@ -53,9 +53,8 @@ const config: webpack.Configuration = {
       directory: path.join(__dirname, 'public'),
     },
   },
-  plugins: [
-    new InspectWebpackPlugin(),
-  ],
 };
 
-export default config;
+const inspect = new InspectWebpackPlugin();
+
+export default inspect.wrap(config);
