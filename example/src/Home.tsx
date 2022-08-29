@@ -1,5 +1,7 @@
+import './index.less';
+
 export default function Home() {
   return (
-    <div>Home</div>
+    <div className="main">Home</div>
   );
 }

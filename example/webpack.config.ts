@@ -38,6 +38,14 @@ const config: webpack.Configuration = {
           },
         },
       },
+      {
+        test: /.less$/,
+        use: [
+          'style-loader', // 插入到 style 标签中
+          'css-loader',
+          'less-loader',
+        ],
+      },
     ],
   },
   devServer: {
