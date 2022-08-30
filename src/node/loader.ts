@@ -12,6 +12,7 @@ function getLoaderName(loaderPath: string) {
   return '';
 }
 
+// Ref: https://github.com/stephencookdev/speed-measure-webpack-plugin/blob/v1.5.0/loader.js
 export function pitch() {
   // @ts-expect-error this type
   const callback = this[PLUGIN_NAME];
