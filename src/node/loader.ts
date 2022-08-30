@@ -1,18 +1,20 @@
+import * as path from 'path';
 import { PLUGIN_NAME } from './constants';
+import findUp from 'find-up';
+import fse from 'fs-extra';
 
-let id = 0;
-
-const getLoaderName = (path: string) => {
-  const standardPath = path.replace(/\\/g, '/');
-  const nodeModuleName = /\/node_modules\/([^\/]+)/.exec(standardPath);
-  return (nodeModuleName && nodeModuleName[1]) || '';
-};
+function getLoaderName(loaderPath: string) {
+  const packageJsonPath = findUp.sync('package.json', { cwd: path.dirname(loaderPath) });
+  if (packageJsonPath) {
+    const pkg = fse.readJSONSync(packageJsonPath);
+    return pkg.name;
+  }
+  return '';
+}
 
 export function pitch() {
   // @ts-expect-error this type
   const callback = this[PLUGIN_NAME];
-  // @ts-expect-error this type
-  const module = this.resourcePath;
   // @ts-expect-error this type
   const loaderPaths = this.loaders
     .map((loader: any) => loader.path)
@@ -20,40 +22,34 @@ export function pitch() {
 
   hijackLoaders(loaderPaths, (loader: any, path: string) => {
     const loaderName = getLoaderName(path);
-    const wrapFunc = (func: any) =>
-      function () {
-        const loaderId = id++;
-        // @ts-expect-error this type
-        const almostThis = Object.assign({}, this, {
-          async: function () {
+    const wrapFunc = (func: any) => async function (...args: any[]) {
+      const start = Date.now();
+      // @ts-expect-error this type
+      const almostThis = Object.assign({}, this, {
+        async: function (...asyncArgs: any[]) {
+          // @ts-expect-error this type
+          const asyncCallback = this.async.apply(this, asyncArgs);
+          // @ts-expect-error this type
+          const { resource } = this;
+          return function (...args: any[]) {
+            const end = Date.now();
+            const [, source] = args;
+            callback({
+              id: resource,
+              name: loaderName,
+              result: source,
+              start,
+              end,
+            });
             // @ts-expect-error this type
-            const asyncCallback = this.async.apply(this, arguments);
-
-            return function () {
-              callback({
-                id: loaderId,
-                type: 'end',
-              });
-              // @ts-expect-error this type
-              return asyncCallback.apply(this, arguments);
-            };
-            // @ts-expect-error this type
-          }.bind(this),
-        });
-
-        callback({
-          module,
-          loaderName,
-          id: loaderId,
-          type: 'start',
-        });
-        const ret = func.apply(almostThis, arguments);
-        callback({
-          id: loaderId,
-          type: 'end',
-        });
-        return ret;
-      };
+            return asyncCallback.apply(this, args);
+          };
+          // @ts-expect-error this type
+        }.bind(this),
+      });
+      const ret = func.apply(almostThis, args);
+      return ret;
+    };
 
     if (loader.normal) loader.normal = wrapFunc(loader.normal);
     if (loader.default) loader.default = wrapFunc(loader.default);
@@ -65,13 +61,13 @@ export function pitch() {
 
 export function hijackLoaders(loaderPaths: string[], callback: any) {
   const wrapReq = (reqMethod: any) => {
-    return function () {
+    return function (...args: any[]) {
       // @ts-expect-error this type
-      const ret = reqMethod.apply(this, arguments);
-      if (loaderPaths.includes(arguments[0])) {
+      const ret = reqMethod.apply(this, args);
+      if (loaderPaths.includes(args[0])) {
         if (ret.__inspectHijacked) return ret;
         ret.__inspectHijacked = true;
-        return callback(ret, arguments[0]);
+        return callback(ret, args[0]);
       }
       return ret;
     };

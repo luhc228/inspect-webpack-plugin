@@ -1,5 +1,5 @@
 import { Compiler, NormalModule, Configuration, RuleSetRule, RuleSetUseItem } from 'webpack';
-import type { TransformMap } from '../types';
+import type { TransformMap, TransformInfo } from '../types';
 import * as fs from 'fs';
 import { PLUGIN_NAME } from './constants';
 
@@ -32,7 +32,7 @@ export default class InspectWebpackPlugin {
     };
   }
 
-  wrap(webpackConfig: Configuration) {
+  wrap = (webpackConfig: Configuration) => {
     if (this.options.disable) {
       return webpackConfig;
     }
@@ -43,10 +43,11 @@ export default class InspectWebpackPlugin {
     webpackConfig.plugins = (webpackConfig.plugins || []).concat(this);
     // TODO: add a middleware to devServer
     return webpackConfig;
-  }
+  };
 
   apply(compiler: Compiler) {
     compiler.hooks.done.tap(PLUGIN_NAME, () => {
+      console.log(this.transformMap);
       // TODO: optimize the log
       console.log(`Inspect server on localhost:8080/${devServerPath}`);
     });
@@ -61,7 +62,6 @@ export default class InspectWebpackPlugin {
         // @ts-expect-error `resource` param doesn't exist in `Module` type, but it exists exactly.
         const { resource: id } = module;
         if (id && !this.options.exclude?.test(id)) {
-          console.log('buildModule: ', id);
           if (!this.transformMap[id]) {
             // @ts-expect-error `resourceResolveData` param doesn't exist in `Module` type, but it exists exactly.
             const code = fs.readFileSync(module.resourceResolveData.path, 'utf-8');
@@ -80,11 +80,16 @@ export default class InspectWebpackPlugin {
     });
   }
 
-  recordTransformInfo(result: any) {
-    console.log('recordTransformInfo', result);
-  }
+  recordTransformInfo = (result: TransformInfo & { id: string }) => {
+    const { id, ...transformInfo } = result;
+    if (this.transformMap[id]) {
+      this.transformMap[id].push({
+        ...transformInfo,
+      });
+    }
+  };
 
-  private prependLoaders(rules: (RuleSetRule | '...')[]) {
+  private prependLoaders = (rules: (RuleSetRule | '...')[]) => {
     for (const rule of rules) {
       if (rule === '...') {
         continue;
@@ -116,5 +121,5 @@ export default class InspectWebpackPlugin {
       // }
     }
     return rules;
-  }
+  };
 }

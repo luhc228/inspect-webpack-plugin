@@ -1,5 +1,6 @@
 import * as webpack from 'webpack';
 import * as path from 'path';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import 'webpack-dev-server';
 import InspectWebpackPlugin from '../src/node';
 
@@ -12,9 +13,7 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: ['.ts', '.tsx', '...'],
   },
-  cache: {
-    type: 'filesystem',
-  },
+  plugins: [new MiniCssExtractPlugin()],
   module: {
     rules: [
       {
@@ -41,7 +40,7 @@ const config: webpack.Configuration = {
       {
         test: /.less$/,
         use: [
-          'style-loader', // 插入到 style 标签中
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'less-loader',
         ],
