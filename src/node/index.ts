@@ -80,8 +80,8 @@ export default class InspectWebpackPlugin {
     });
   }
 
-  recordTransformInfo() {
-    console.log('recordTransformInfo');
+  recordTransformInfo(result: any) {
+    console.log('recordTransformInfo', result);
   }
 
   private prependLoaders(rules: (RuleSetRule | '...')[]) {
