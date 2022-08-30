@@ -17,7 +17,7 @@ interface PluginOptions {
 }
 
 const DEFAULT_PLUGIN_OPTIONS: PluginOptions = {
-
+  disable: false,
   exclude: /node_modules/,
 };
 
