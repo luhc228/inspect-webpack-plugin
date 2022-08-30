@@ -65,8 +65,6 @@ export function hijackLoaders(loaderPaths: string[], callback: any) {
       // @ts-expect-error this type
       const ret = reqMethod.apply(this, args);
       if (loaderPaths.includes(args[0])) {
-        if (ret.__inspectHijacked) return ret;
-        ret.__inspectHijacked = true;
         return callback(ret, args[0]);
       }
       return ret;

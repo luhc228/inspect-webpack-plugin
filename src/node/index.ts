@@ -81,7 +81,14 @@ export default class InspectWebpackPlugin {
   }
 
   recordTransformInfo = (result: TransformInfo & { id: string }) => {
+    if (!result) {
+      return;
+    }
     const { id, ...transformInfo } = result;
+    // Do not append the transform map if it existed.
+    if (this.transformMap[id] && this.transformMap[id].slice(-1)[0]?.name === transformInfo.name) {
+      return;
+    }
     if (this.transformMap[id]) {
       this.transformMap[id].push({
         ...transformInfo,
@@ -110,6 +117,7 @@ export default class InspectWebpackPlugin {
       if (rule.oneOf) {
         rule.oneOf = this.prependLoaders(rule.oneOf) as RuleSetRule[];
       }
+      // TODO:
       // if (Array.isArray(rule.resource)) {
       //   rule.resource = this.prependLoaders(rule.resource);
       // }
