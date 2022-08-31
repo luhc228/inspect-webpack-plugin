@@ -1,4 +1,4 @@
-import { Compiler, NormalModule, Configuration, RuleSetRule, RuleSetUseItem } from 'webpack';
+import { Compiler, NormalModule } from 'webpack';
 import type { TransformMap, TransformInfo } from '../types';
 import * as fs from 'fs';
 import { PLUGIN_NAME } from './constants';
