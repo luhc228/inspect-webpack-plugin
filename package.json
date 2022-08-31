@@ -2,7 +2,7 @@
   "name": "inspect-webpack-plugin",
   "version": "0.0.0",
   "description": "A webpack plugin for inspecting module assets generation.",
-  "main": "index.js",
+  "main": "build/node/index.js",
   "keywords": [
     "webpack-plugin",
     "inspect"
@@ -14,11 +14,11 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "tsc",
-    "build:node": "",
+    "build": "pnpm build:node",
+    "build:node": "tsc",
     "build:web": "",
-    "watch": "",
-    "watch:node": "",
+    "watch": "pnpm watch:node",
+    "watch:node": "tsc -w",
     "watch:web": "",
     "watch:example": "webpack-dev-server --config ./example/webpack.config.ts --mode development",
     "build:example": "webpack --config ./example/webpack.config.ts --mode production",

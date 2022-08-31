@@ -2,7 +2,7 @@ import * as webpack from 'webpack';
 import * as path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import 'webpack-dev-server';
-import InspectWebpackPlugin from '../src/node';
+import InspectWebpackPlugin from '../build/node';
 
 const config: webpack.Configuration = {
   entry: path.resolve(__dirname, './src/App.tsx'),
@@ -13,7 +13,10 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: ['.ts', '.tsx', '...'],
   },
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new InspectWebpackPlugin(),
+  ],
   module: {
     rules: [
       {
@@ -54,6 +57,4 @@ const config: webpack.Configuration = {
   },
 };
 
-const inspect = new InspectWebpackPlugin();
-
-export default inspect.wrap(config);
+export default config;

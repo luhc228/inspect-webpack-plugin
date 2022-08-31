@@ -16,10 +16,9 @@ function getLoaderName(loaderPath: string) {
 export function pitch() {
   // @ts-expect-error this type
   const callback = this[PLUGIN_NAME];
+  // TODO: filter inspect-webpack-plugin/loader
   // @ts-expect-error this type
-  const loaderPaths = this.loaders
-    .map((loader: any) => loader.path)
-    .filter((loader: any) => !loader.includes('speed-measure-webpack-plugin'));
+  const loaderPaths = this.loaders.map((loader: any) => loader.path);
 
   hijackLoaders(loaderPaths, (loader: any, path: string) => {
     const loaderName = getLoaderName(path);
