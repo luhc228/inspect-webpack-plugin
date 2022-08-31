@@ -5,7 +5,8 @@ export default function Document() {
     <html>
       <head>
         <meta charSet="utf-8" />
-        <meta name="description" content="ICE 3 Project" />
+        <meta name="description" content="Inspect Webpack Plugin" />
+        <link data-rh="true" rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <Meta />
         <Title />

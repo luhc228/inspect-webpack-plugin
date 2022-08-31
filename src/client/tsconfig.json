@@ -9,6 +9,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,

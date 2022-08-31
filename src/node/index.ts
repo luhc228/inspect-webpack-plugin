@@ -1,6 +1,7 @@
 import { Compiler, NormalModule } from 'webpack';
 import type { TransformMap, TransformInfo } from '../types';
 import * as fs from 'fs';
+import * as path from 'path';
 import { PLUGIN_NAME } from './constants';
 
 const devServerPath = '__inspect';
@@ -24,6 +25,7 @@ const DEFAULT_PLUGIN_OPTIONS: PluginOptions = {
 export default class InspectWebpackPlugin {
   private options: PluginOptions = DEFAULT_PLUGIN_OPTIONS;
   private transformMap: TransformMap = {};
+  private context = '';
 
   constructor(options: PluginOptions = {}) {
     this.options = {
@@ -33,6 +35,7 @@ export default class InspectWebpackPlugin {
   }
 
   apply(compiler: Compiler) {
+    this.context = compiler.context;
     compiler.hooks.done.tap(PLUGIN_NAME, () => {
       console.log(this.transformMap);
       // TODO: optimize the log
@@ -85,4 +88,8 @@ export default class InspectWebpackPlugin {
       });
     }
   };
+
+  private relativeId(id: string) {
+    return path.relative(this.context, id);
+  }
 }

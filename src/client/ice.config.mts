@@ -1,6 +1,12 @@
 import { defineConfig } from '@ice/app';
+import antd from '@ice/plugin-antd';
 
-// The project config, see https://v3.ice.work/docs/guide/basic/config
+// see https://v3.ice.work/docs/guide/basic/config
 export default defineConfig({
-  // Set your configs here.
+  plugins: [
+    antd({
+      importStyle: true,
+      dark: true,
+    }),
+  ],
 });

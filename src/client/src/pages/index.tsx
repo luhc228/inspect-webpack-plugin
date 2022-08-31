@@ -1,41 +1,79 @@
+
 import { useState } from 'react';
-import logo from '@/assets/logo.png';
+import { Drawer, List, Col, Row } from 'antd';
+import transformMap from '../../mock/transformMap.json';
 import styles from './index.module.css';
+import CodeDiffViewer from '@/components/CodeDiffViewer';
+
+console.log(transformMap);
 
 export default function Home() {
-  const [count, setCount] = useState(1);
-  const updateCount = () => setCount((c) => c + 1);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [moduleId, setModuleId] = useState('');
+  const [transformIndex, setTransformIndex] = useState(0);
+  const showDrawer = () => setDrawerVisible(true);
+  const closeDrawer = () => setDrawerVisible(false);
+
+  const moduleIds = Reflect.ownKeys(transformMap);
 
   return (
-    <div className={styles.app}>
-      <header className={styles.appHeader}>
-        <img src={logo} alt="logo" className={styles.logo} />
-        <p className={styles.title}>
-          Hello ICE 3
-        </p>
-      </header>
-      <div className={styles.body}>
-        <button type="button" onClick={updateCount}>
-          👍🏻 {count}
-        </button>
-        <p>
-          <a
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <List
+        header={<div className={styles.listTitle}>Module Id</div>}
+        bordered
+        dataSource={moduleIds}
+        renderItem={(item: string) => (
+          <List.Item
+            onClick={() => {
+              setModuleId(item);
+              showDrawer();
+            }}
           >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            href="https://v3.ice.work/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn ICE
-          </a>
-        </p>
-      </div>
-    </div>
+            {item}
+          </List.Item>
+        )}
+      />
+
+      <Drawer
+        title="Transform Stack"
+        placement="right"
+        bodyStyle={{ padding: '0 24' }}
+        onClose={closeDrawer}
+        visible={drawerVisible}
+        width="90vw"
+        destroyOnClose
+      >
+        <Row gutter={16}>
+          <Col span={6}>
+            <List
+              header={<div className={styles.listTitle}>Module Id</div>}
+              dataSource={(transformMap[moduleId] || []).map(item => item.name)}
+              renderItem={(item: string, index: number) => (
+                <List.Item
+                  onClick={() => {
+                    setTransformIndex(index);
+                  }}
+                >
+                  {item}
+                </List.Item>
+              )}
+            />
+          </Col>
+          <Col span={18}>
+            <CodeDiffViewer
+              oldCode={transformIndex > 0 ? transformMap[moduleId]?.[transformIndex - 1].result : ''}
+              newCode={transformMap[moduleId]?.[transformIndex].result}
+            />
+          </Col>
+        </Row>
+
+      </Drawer>
+    </>
   );
+}
+
+export function getConfig() {
+  return {
+    title: 'Inspect Webpack Plugin',
+  };
 }
