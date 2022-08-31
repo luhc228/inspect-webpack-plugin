@@ -16,10 +16,10 @@
   "scripts": {
     "build": "pnpm build:node",
     "build:node": "tsc",
-    "build:web": "",
+    "build:web": "cd src/client && pnpm build",
     "watch": "pnpm watch:node",
     "watch:node": "tsc -w",
-    "watch:web": "",
+    "watch:web": "cd src/client && pnpm run start",
     "watch:example": "webpack-dev-server --config ./example/webpack.config.ts --mode development",
     "build:example": "webpack --config ./example/webpack.config.ts --mode production",
     "lint": "npm run eslint",
@@ -28,6 +28,8 @@
   },
   "devDependencies": {
     "@applint/spec": "^1.2.3",
+    "@ice/app": "release",
+    "@ice/runtime": "release",
     "@swc/core": "^1.2.244",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.13",

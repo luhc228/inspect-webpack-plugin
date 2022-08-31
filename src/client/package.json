@@ -1,0 +1,7 @@
+{
+  "name": "inspect-webpack-plugin-client",
+  "scripts": {
+    "start": "ice start",
+    "build": "ice build"
+  }
+}
