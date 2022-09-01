@@ -3,7 +3,8 @@
     "target": "ESNext",
     "module": "CommonJS",
     "lib": ["DOM", "ESNext"],
-    "outDir": "build",
+    "outDir": "build/node",
+    "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,7 +15,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src/node"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"

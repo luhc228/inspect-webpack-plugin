@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  user-select: none;
+  line-height: 64px;
+  padding: 0 24px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.title {
+  font-size: 18px;
+}
+
+.listTitle {
+  font-size: 18px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.listItem {
+  cursor: pointer;
+  user-select: none;
+  padding-left: 24px;
+  display: block;
+}
+
+.listItem :nth-child(2) {
+  margin-top: 4px;
+}
+
+.drawer :global {
+  .ant-drawer-body {
+    padding: 0;
+  }
+
+  .ant-row {
+    height: 100%;
+  }
+
+  .ant-col {
+    border-style: solid;
+    border-color: #303030;
+    border-width: 0 0 1px 1px;
+  }
+}

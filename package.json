@@ -1,45 +1,67 @@
 {
   "name": "inspect-webpack-plugin",
   "version": "0.0.0",
-  "description": "A webpack plugin for inspecting module assets generation.",
+  "description": "A webpack plugin for inspecting module transform of loaders.",
   "main": "build/node/index.js",
+  "types": "build/node/index.d.ts",
+  "files": [
+    "build",
+    "!build/**/*.map"
+  ],
   "keywords": [
     "webpack-plugin",
     "inspect"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luhc228/inspect-webpack-plugin.git"
+  },
   "author": "luhc228",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@7.5.0",
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "build": "pnpm build:node",
+    "build": "rm -rf build && pnpm build:node && pnpm build:client",
     "build:node": "tsc",
-    "build:web": "",
-    "watch": "pnpm watch:node",
+    "build:client": "cd src/client && pnpm build",
+    "watch": "pnpm watch:client & pnpm watch:node",
     "watch:node": "tsc -w",
-    "watch:web": "",
+    "watch:client": "cd src/client && pnpm run start",
     "watch:example": "webpack-dev-server --config ./example/webpack.config.ts --mode development",
     "build:example": "webpack --config ./example/webpack.config.ts --mode production",
     "lint": "npm run eslint",
     "eslint": "eslint --ext .ts,.tsx ./",
     "eslint:fix": "npm run eslint -- --fix"
   },
+  "dependencies": {
+    "express": "^4.18.1",
+    "find-up": "^5.0.0",
+    "fs-extra": "^10.1.0",
+    "kolorist": "^1.5.1"
+  },
   "devDependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@applint/spec": "^1.2.3",
+    "@ice/app": "release",
+    "@ice/plugin-antd": "1.0.0-rc.1",
+    "@ice/runtime": "release",
     "@swc/core": "^1.2.244",
+    "@types/express": "^4.17.13",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.13",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/webpack": "^5.28.0",
+    "antd": "^4.22.8",
     "css-loader": "^6.7.1",
     "eslint": "^8.23.0",
     "less": "^4.1.3",
     "less-loader": "^11.0.0",
     "mini-css-extract-plugin": "^2.6.1",
     "react": "^18.2.0",
+    "react-diff-viewer": "^3.1.1",
     "react-dom": "^18.2.0",
     "style-loader": "^3.3.1",
     "stylelint": "^14.11.0",
@@ -52,9 +74,5 @@
   },
   "peerDependencies": {
     "webpack": "^5.0.0"
-  },
-  "dependencies": {
-    "find-up": "^5.0.0",
-    "fs-extra": "^10.1.0"
   }
 }
