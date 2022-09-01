@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Drawer, List, Col, Row } from 'antd';
+import { Drawer, List, Col, Row, Tag } from 'antd';
 import transformMap from '../../mock/transformMap.json';
 import styles from './index.module.css';
 import CodeDiffViewer from '@/components/CodeDiffViewer';
@@ -18,38 +18,59 @@ export default function Home() {
 
   return (
     <>
+      <div className={styles.header}>
+        <div className={styles.title}>Inspect Webpack Plugin</div>
+      </div>
       <List
-        header={<div className={styles.listTitle}>Module Id</div>}
         bordered
         dataSource={moduleIds}
         renderItem={(item: string) => (
           <List.Item
+            className={styles.listItem}
             onClick={() => {
               setModuleId(item);
               showDrawer();
+              setTransformIndex(0); // init to __load__
             }}
           >
-            {item}
+            <div>{item}</div>
+            <div>
+              {
+                transformMap[item]
+                  .filter(({ name }) => name !== '__LOAD__')
+                  .map(({ name }) => <Tag style={{ color: '#707173', borderRadius: 10 }}>{name}</Tag>)
+              }
+            </div>
           </List.Item>
         )}
       />
 
       <Drawer
-        title="Transform Stack"
+        title={moduleId}
         placement="right"
-        bodyStyle={{ padding: '0 24' }}
         onClose={closeDrawer}
         visible={drawerVisible}
         width="90vw"
+        className={styles.drawer}
         destroyOnClose
       >
-        <Row gutter={16}>
+        <Row>
           <Col span={6}>
             <List
-              header={<div className={styles.listTitle}>Module Id</div>}
+              header={
+                <div
+                  className={styles.listTitle}
+                  style={{ textAlign: 'center' }}
+                >
+                  Transform Stack
+                </div>
+              }
+              footer={<></>}
               dataSource={(transformMap[moduleId] || []).map(item => item.name)}
               renderItem={(item: string, index: number) => (
                 <List.Item
+                  className={styles.listItem}
+                  style={transformIndex === index ? { background: '#141414' } : {}}
                   onClick={() => {
                     setTransformIndex(index);
                   }}
@@ -70,6 +91,10 @@ export default function Home() {
       </Drawer>
     </>
   );
+}
+
+function calcLoaderTimeInterval(start: number, end: number) {
+
 }
 
 export function getConfig() {
