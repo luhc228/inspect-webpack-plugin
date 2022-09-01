@@ -8,16 +8,16 @@
     "inspect"
   ],
   "author": "luhc228",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@7.5.0",
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "build": "pnpm build:node",
+    "build": "rm -rf build && pnpm build:node && pnpm build:client",
     "build:node": "tsc",
     "build:client": "cd src/client && pnpm build",
-    "watch": "pnpm watch:node",
+    "watch": "pnpm watch:client & pnpm watch:node",
     "watch:node": "tsc -w",
     "watch:client": "cd src/client && pnpm run start",
     "watch:example": "webpack-dev-server --config ./example/webpack.config.ts --mode development",
