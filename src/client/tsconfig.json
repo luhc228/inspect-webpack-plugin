@@ -13,7 +13,6 @@
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
-    "rootDir": "./",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

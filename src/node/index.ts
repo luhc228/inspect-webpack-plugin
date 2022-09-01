@@ -1,10 +1,10 @@
 import { Compiler, NormalModule } from 'webpack';
-import type { TransformMap, TransformInfo } from '../types';
-import * as fs from 'fs';
+import type { TransformMap, TransformInfo } from './types';
+import fse from 'fs-extra';
 import * as path from 'path';
-import { PLUGIN_NAME } from './constants';
-
-const devServerPath = '__inspect';
+import { PLUGIN_NAME, PORT, SERVER_HOST } from './constants';
+import express from 'express';
+import type { Request, Response } from 'express';
 
 interface PluginOptions {
   /**
@@ -26,6 +26,7 @@ export default class InspectWebpackPlugin {
   private options: PluginOptions = DEFAULT_PLUGIN_OPTIONS;
   private transformMap: TransformMap = {};
   private context = '';
+  private done = false;
 
   constructor(options: PluginOptions = {}) {
     this.options = {
@@ -35,11 +36,15 @@ export default class InspectWebpackPlugin {
   }
 
   apply(compiler: Compiler) {
+    if (this.options.disable) {
+      return;
+    }
+
     this.context = compiler.context;
+
     compiler.hooks.done.tap(PLUGIN_NAME, () => {
-      console.log(this.transformMap);
-      // TODO: optimize the log
-      console.log(`Inspect server on localhost:8080/${devServerPath}`);
+      this.done = true;
+      this.createServer();
     });
 
     compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
@@ -57,7 +62,7 @@ export default class InspectWebpackPlugin {
 
           if (!this.transformMap[id]) {
             // @ts-expect-error `resourceResolveData` doesn't exist in `Module` type, but it exists exactly.
-            const code = fs.readFileSync(module.resourceResolveData.path, 'utf-8');
+            const code = fse.readFileSync(module.resourceResolveData.path, 'utf-8');
             const start = Date.now();
             this.transformMap[id] = [
               {
@@ -89,7 +94,22 @@ export default class InspectWebpackPlugin {
     }
   };
 
-  private relativeId(id: string) {
-    return path.relative(this.context, id);
+  private createServer() {
+    const app = express();
+
+    app.use(express.static(path.join(__dirname, '../client')));
+
+    app.get('/data', (req: Request, res: Response) => {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.send({
+        done: this.done,
+        transformMap: this.transformMap,
+        context: this.context,
+      });
+    });
+
+    app.listen(PORT, () => {
+      console.log(`Inspect server on ${SERVER_HOST}/`);
+    });
   }
 }

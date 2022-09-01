@@ -4,3 +4,12 @@ declare module '*.module.css' {
 }
 
 declare module '*.png';
+
+type TransformMap = Record<string, TransformInfo[]>;
+
+interface TransformInfo {
+  name: string;
+  result: string;
+  start: number;
+  end: number;
+}

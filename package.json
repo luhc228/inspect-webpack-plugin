@@ -32,6 +32,7 @@
     "@ice/plugin-antd": "1.0.0-rc.1",
     "@ice/runtime": "release",
     "@swc/core": "^1.2.244",
+    "@types/express": "^4.17.13",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.13",
     "@types/react": "^18.0.17",
@@ -59,6 +60,7 @@
     "webpack": "^5.0.0"
   },
   "dependencies": {
+    "express": "^4.18.1",
     "find-up": "^5.0.0",
     "fs-extra": "^10.1.0"
   }
