@@ -1,8 +1,9 @@
 {
   "name": "inspect-webpack-plugin",
   "version": "0.0.0",
-  "description": "A webpack plugin for inspecting module assets generation.",
+  "description": "A webpack plugin for inspecting module transform of loaders.",
   "main": "build/node/index.js",
+  "types": "build/node/index.d.ts",
   "keywords": [
     "webpack-plugin",
     "inspect"
@@ -41,6 +42,7 @@
     "antd": "^4.22.8",
     "css-loader": "^6.7.1",
     "eslint": "^8.23.0",
+    "kolorist": "^1.5.1",
     "less": "^4.1.3",
     "less-loader": "^11.0.0",
     "mini-css-extract-plugin": "^2.6.1",

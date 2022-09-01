@@ -15,9 +15,11 @@ export default defineConfig({
     format: 'cjs',
   },
   webpack: (webpackConfig) => {
-    webpackConfig.devServer = webpackConfig.devServer || {};
-    webpackConfig.devServer.devMiddleware = webpackConfig.devServer?.devMiddleware || {};
-    webpackConfig.devServer.devMiddleware.writeToDisk = true;
+    if (process.env.NODE_ENV === 'development') {
+      webpackConfig.devServer = webpackConfig.devServer || {};
+      webpackConfig.devServer.devMiddleware = webpackConfig.devServer?.devMiddleware || {};
+      webpackConfig.devServer.devMiddleware.writeToDisk = true;
+    }
     return webpackConfig;
   },
 });

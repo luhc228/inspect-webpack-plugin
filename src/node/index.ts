@@ -5,6 +5,7 @@ import * as path from 'path';
 import { PLUGIN_NAME, PORT, SERVER_HOST } from './constants';
 import express from 'express';
 import type { Request, Response } from 'express';
+import { blue, bold, green } from 'kolorist';
 
 interface PluginOptions {
   /**
@@ -109,7 +110,9 @@ export default class InspectWebpackPlugin {
     });
 
     app.listen(PORT, () => {
-      console.log(`Inspect server on ${SERVER_HOST}/`);
+      console.log('\n');
+      console.log(green(bold('Inspect is running at: ')) + blue(bold(SERVER_HOST)));
+      console.log('\n');
     });
   }
 }

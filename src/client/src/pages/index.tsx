@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { Drawer, List, Col, Row, Tag, notification } from 'antd';
 import styles from './index.module.css';
 import CodeDiffViewer from '@/components/CodeDiffViewer';
-
-const SERVER_HOST = 'http://localhost:3000';
+import { SERVER_HOST } from '@/constants';
 
 interface Data {
   transformMap: TransformMap;
