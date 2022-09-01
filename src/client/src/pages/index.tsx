@@ -4,6 +4,7 @@ import { Drawer, List, Col, Row, Tag, notification } from 'antd';
 import styles from './index.module.css';
 import CodeDiffViewer from '@/components/CodeDiffViewer';
 import { SERVER_HOST } from '@/constants';
+import { ReloadOutlined } from '@ant-design/icons';
 
 interface Data {
   transformMap: TransformMap;
@@ -17,7 +18,7 @@ export default function Home() {
   const [moduleId, setModuleId] = useState('');
   const [transformIndex, setTransformIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [context, setContext] = useState('');
+  const [contextPath, setContextPath] = useState('');
 
   const showDrawer = () => setDrawerVisible(true);
   const closeDrawer = () => setDrawerVisible(false);
@@ -28,7 +29,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((data: Data) => {
         const { context, transformMap } = data;
-        setContext(context);
+        setContextPath(context);
         setTransformMap(transformMap);
       })
       .catch((error) => {
@@ -50,7 +51,9 @@ export default function Home() {
     <>
       <div className={styles.header}>
         <div className={styles.title}>Inspect Webpack Plugin</div>
-        <div className={styles.operation}>Refresh</div>
+        <div className={styles.operation}>
+          <ReloadOutlined className={styles.icon} onClick={() => fetchData()} />
+        </div>
       </div>
       <List
         bordered
@@ -65,7 +68,7 @@ export default function Home() {
               setTransformIndex(0); // init to `__load__`
             }}
           >
-            <div>{formatFilepath(item, context)}</div>
+            <div>{formatFilepath(item, contextPath)}</div>
             <div>
               {
                 transformMap[item]
@@ -80,7 +83,7 @@ export default function Home() {
       />
 
       <Drawer
-        title={formatFilepath(moduleId, context)}
+        title={formatFilepath(moduleId, contextPath)}
         placement="right"
         onClose={closeDrawer}
         visible={drawerVisible}
@@ -136,7 +139,7 @@ function calcLoaderTimeInterval(start: number, end: number) {
 
 function formatFilepath(filepath: string, context: string) {
   return filepath
-    .replace(RegExp(`^${context}`), '')
+    .replace(RegExp(`${context}`), '')
     .replace(RegExp('^/'), './');
 }
 

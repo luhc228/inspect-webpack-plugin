@@ -57,6 +57,6 @@ export default {
         },
       ],
     },
-    context: '/Users/luhc228/workspace/github.com/luhc228/inspect-webpack-plugins',
+    context: '/Users/luhc228/workspace/github.com/luhc228/inspect-webpack-plugin',
   },
 };

@@ -4,10 +4,18 @@
   "description": "A webpack plugin for inspecting module transform of loaders.",
   "main": "build/node/index.js",
   "types": "build/node/index.d.ts",
+  "files": [
+    "build",
+    "!build/**/*.map"
+  ],
   "keywords": [
     "webpack-plugin",
     "inspect"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luhc228/inspect-webpack-plugin.git"
+  },
   "author": "luhc228",
   "license": "MIT",
   "packageManager": "pnpm@7.5.0",
@@ -27,7 +35,14 @@
     "eslint": "eslint --ext .ts,.tsx ./",
     "eslint:fix": "npm run eslint -- --fix"
   },
+  "dependencies": {
+    "express": "^4.18.1",
+    "find-up": "^5.0.0",
+    "fs-extra": "^10.1.0",
+    "kolorist": "^1.5.1"
+  },
   "devDependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@applint/spec": "^1.2.3",
     "@ice/app": "release",
     "@ice/plugin-antd": "1.0.0-rc.1",
@@ -42,7 +57,6 @@
     "antd": "^4.22.8",
     "css-loader": "^6.7.1",
     "eslint": "^8.23.0",
-    "kolorist": "^1.5.1",
     "less": "^4.1.3",
     "less-loader": "^11.0.0",
     "mini-css-extract-plugin": "^2.6.1",
@@ -60,10 +74,5 @@
   },
   "peerDependencies": {
     "webpack": "^5.0.0"
-  },
-  "dependencies": {
-    "express": "^4.18.1",
-    "find-up": "^5.0.0",
-    "fs-extra": "^10.1.0"
   }
 }
