@@ -14,10 +14,9 @@ A webpack plugin for inspecting module transform of loaders. The plugin is inspi
 npm i inspect-webpack-plugin -D
 ```
 
-Add plugin to your `webpack.config.js`:
+Add plugin to your `webpack.config.ts`:
 
 ```ts
-// vite.config.ts
 import InspectWebpackPlugin from 'inspect-webpack-plugin';
 
 export default {
